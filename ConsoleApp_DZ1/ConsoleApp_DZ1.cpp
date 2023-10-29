@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <Windows.h>
+#include <ctime>
 
 #include "graph_file.cpp"
 #include "Node.h"
@@ -93,7 +94,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                 vector<vector<int>> node;
                 for (int i = 0; i < pos.size(); i++) {
                     if (i == agent) {
-                        if (-1 < (pos[i][0] + step[0]) && (pos[i][0] + step[0]) < 5 && -1 < (pos[i][1] + step[1]) && (pos[i][1] + step[1]) < 5 &&
+                        if (-1 < (pos[i][0] + step[0]) && (pos[i][0] + step[0]) < map.size() && -1 < (pos[i][1] + step[1]) && (pos[i][1] + step[1]) < map.size() &&
                             map[pos[i][0] + step[0]][pos[i][1] + step[1]] == 0 &&
                             find(pos.begin(), pos.end(), vector<int>{pos[i][0] + step[0], pos[i][1] + step[1]}) == pos.end()) {
                             node.push_back({ pos[i][0] + step[0], pos[i][1] + step[1] });
@@ -112,7 +113,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                         vector<vector<int>> node2;
                         for (int j = 0; j < node.size(); j++) {
                             if (j == agent2) {
-                                if (-1 < (node[j][0] + step2[0]) && (node[j][0] + step2[0]) < 5 && -1 < (node[j][1] + step2[1]) && (node[j][1] + step2[1]) < 5 &&
+                                if (-1 < (node[j][0] + step2[0]) && (node[j][0] + step2[0]) < map.size() && -1 < (node[j][1] + step2[1]) && (node[j][1] + step2[1]) < map.size() &&
                                     map[node[j][0] + step2[0]][node[j][1] + step2[1]] == 0 &&
                                     find(node.begin(), node.end(), vector<int>{node[j][0] + step2[0], node[j][1] + step2[1]}) == node.end()) {
                                     node2.push_back({ node[j][0] + step2[0], node[j][1] + step2[1] });
@@ -131,7 +132,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                                 vector<vector<int>> node3;
                                 for (int k = 0; k < node2.size(); k++) {
                                     if (k == agent3) {
-                                        if (-1 < (node2[k][0] + step3[0]) && (node2[k][0] + step3[0]) < 5 && -1 < (node2[k][1] + step3[1]) && (node2[k][1] + step3[1]) < 5 &&
+                                        if (-1 < (node2[k][0] + step3[0]) && (node2[k][0] + step3[0]) < map.size() && -1 < (node2[k][1] + step3[1]) && (node2[k][1] + step3[1]) < map.size() &&
                                             map[node2[k][0] + step3[0]][node2[k][1] + step3[1]] == 0 &&
                                             find(node2.begin(), node2.end(), vector<int>{node2[k][0] + step3[0], node2[k][1] + step3[1]}) == node2.end()) {
                                             node3.push_back({ node2[k][0] + step3[0], node2[k][1] + step3[1] });
@@ -218,21 +219,20 @@ vector <Node> solve_tree(vector <Node> tree) {
 
 int main()
 {
-    //vector<vector<int>> start = { {0, 0}, {0, 1}, {0, 2} };
-    //vector<vector<int>> finish = { {4, 0}, {4, 4}, {0, 4} };
+    /*
     vector<vector<int>> map = {
         {0, 0, 0, 1, 0},
         {0, 0, 0, 0, 0},
         {1, 1, 0, 1, 0},
         {0, 0, 0, 1, 0},
         {0, 0, 0, 0, 0} };
-
-    /*
+        */
+    
     vector<vector<int>> map = { 
         {1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
         {1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 4, 0, 1, 1, 0, 1, 1, 0},
+        {0, 0, 0, 0, 1, 1, 0, 1, 1, 0},
         {0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
         {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -240,28 +240,28 @@ int main()
         {0, 0, 1, 1, 1, 0, 1, 0, 0, 0},
         {0, 0, 0, 1, 0, 0, 0, 0, 0, 0}
     };
-    */
-
-    for (int i = 0; i < n; i++)     // Цикл, который идёт по строкам
-        for (int j = 0; j < m; j++) // Цикл, который идёт по элементам
-        {
-            //map[i][j] = 1;
-        }
-
+    
     out_array(map);
 
-    vector<vector<int>> start = input_pos_robots("Start");
-    vector<vector<int>> finish = input_pos_robots("Finish");
+    vector<vector<int>> start = { {0, 1}, {0, 2}, {0, 3} };
+    vector<vector<int>> finish = { {1, 1}, {3, 2}, {1, 3} };
+
+    //vector<vector<int>> start = input_pos_robots("Start");
+    //vector<vector<int>> finish = input_pos_robots("Finish");
 
     cout << "Start" << pos_to_string(start) << endl;
     cout << "Finish" << pos_to_string(finish) << endl;
 
     cout << "\n";
+    unsigned int start_time = clock(); // начальное время
     vector <Node> tree = generate_tree(map, start, finish);
 
     vector <Node> path = solve_tree(tree);
 
-
+    unsigned int end_time = clock(); // конечное время
+    unsigned int search_time = end_time - start_time; // искомое время
+    cout << "WORK TIME in ms: " << search_time << endl;
+    
     graph_file graph;
     graph.create_file("graph.dot");
     graph.write_graph(path);
