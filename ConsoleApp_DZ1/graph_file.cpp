@@ -31,7 +31,6 @@ public:
             string sourse = '"' + graph[i].name + '"';
             string target = '"' + graph[i].parent_name + '"';
             string edge;
-            cout << graph[i].in_path << endl;
             if (graph[i].in_path) {
                 edge = target + " -> " + sourse + "[color=" + '"' + "blue" + '"' + "]";
                 file << target + "[color=" + '"' + "blue" + '"' + "]" << endl;

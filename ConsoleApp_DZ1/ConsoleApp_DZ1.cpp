@@ -48,6 +48,18 @@ void out_array(vector< vector<int> > vec)
     }
 }
 
+vector<vector<int>> input_pos_robots(string s) {
+    vector<vector<int>> res = { {0, 0}, {0, 0}, {0, 0} };
+    cout << "Input " + s + " cootrdinate the first robot" << endl;
+    cin >> res[0][0] >> res[0][1];
+    cout << "Input " + s + " cootrdinate the second robot" << endl;
+    cin >> res[1][0] >> res[1][1];
+    cout << "Input " + s + " cootrdinate the third robot" << endl;
+    cin >> res[2][0] >> res[2][1];
+
+    return res;
+}
+
 string pos_to_string(vector<vector<int>> pos) {
     string pos_str = "";
     for (auto p : pos) {
@@ -188,39 +200,26 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
             }
         }
     }
-    cout << "net puti" << endl;
+    cout << "Path not found: maybe it doesn't exist" << endl;
     return Graph;
 }
 
 vector <Node> solve_tree(vector <Node> tree) {
-
     cout << "fin node id= " << tree.size() - 1 << endl;
     Node current_node = tree[tree.size() - 1];
     tree[tree.size() - 1].in_path = true;
-
-
     while (current_node.parent_node_id != 0) {
         cout << "current_node_per_id= " << current_node.parent_node_id << endl;
         tree[current_node.parent_node_id - 1].in_path = true;
         current_node = tree[current_node.parent_node_id];
-
-
     }
-
     return tree;
 }
 
 int main()
 {
-	cout << "Hello Golubov!\n";
-
-
-
-
-
-
-    vector<vector<int>> start = { {0, 0}, {0, 1}, {0, 2} };
-    vector<vector<int>> finish = { {1, 0}, {1, 1}, {1, 2} };
+    //vector<vector<int>> start = { {0, 0}, {0, 1}, {0, 2} };
+    //vector<vector<int>> finish = { {4, 0}, {4, 4}, {0, 4} };
     vector<vector<int>> map = {
         {0, 0, 0, 1, 0},
         {0, 0, 0, 0, 0},
@@ -250,6 +249,12 @@ int main()
         }
 
     out_array(map);
+
+    vector<vector<int>> start = input_pos_robots("Start");
+    vector<vector<int>> finish = input_pos_robots("Finish");
+
+    cout << "Start" << pos_to_string(start) << endl;
+    cout << "Finish" << pos_to_string(finish) << endl;
 
     cout << "\n";
     vector <Node> tree = generate_tree(map, start, finish);
