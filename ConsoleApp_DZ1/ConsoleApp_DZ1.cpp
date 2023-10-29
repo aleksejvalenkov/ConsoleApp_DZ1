@@ -8,8 +8,6 @@
 #include "Node.h"
 //#include "solve.cpp"
 
-
-
 using namespace std;
 
 #define m 10
@@ -23,9 +21,9 @@ void SetColor(int text, int bg) {
 
 void out_array(vector< vector<int> > vec)
 {
-    for (int i = 0; i < n; i++) // Цикл, который идёт по строкам
+    for (int i = 0; i < vec.size(); i++) // Цикл, который идёт по строкам
     {
-        for (int j = 0; j < m; j++) // Цикл, который идёт по элементам
+        for (int j = 0; j < vec[0].size(); j++) // Цикл, который идёт по элементам
         {
             switch (vec[i][j])
             {
@@ -55,29 +53,26 @@ string pos_to_string(vector<vector<int>> pos) {
     for (auto p : pos) {
         pos_str += "[" + to_string(p[0]) + ", " + to_string(p[1]) + "]";
     }
-    pos_str = '"' + pos_str + '"';
+    //pos_str = '"' + pos_str + '"';
     return pos_str;
 }
 
-vector <Node> solve_tree() {
+vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, vector<vector<int>> finish) {
     vector <Node> Graph;
     vector<vector<int>> steps = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
     vector<vector<int>> combos = {
         {0}, {1}, {2},
         {0, 1}, {0, 2}, {1, 0}, {1, 2}, {2, 0}, {2, 1},
         {0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0} };
-    vector<vector<vector<int>>> nodes = { {{0, 0}, {0, 1}, {0, 2}} };
-    vector<vector<int>> finish = { {3, 0}, {0, 4}, {4, 2} };
-    vector<vector<int>> map = {
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0},
-        {1, 1, 0, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0} };
+
+    vector<vector<vector<int>>> nodes = { start };
+
+
     for (int q = 0; q < nodes.size(); q++) {
         vector<vector<int>> pos = nodes[q];
         string pos_str = pos_to_string(pos);
-        cout << "pos: " << pos_str << endl;
+        int parent_id = q;
+        cout << "pos: " << pos_str << "\f node_id = " << parent_id << endl;
 
 
         for (auto& combo : combos) {
@@ -141,8 +136,11 @@ vector <Node> solve_tree() {
                                     nodes.push_back(node3);
                                     string node3_str = pos_to_string(node3);
                                     Node* this_node = new Node;
+                                    this_node->set_parent_id(parent_id);
+                                    cout << "curr_node_per_id: \t" << parent_id << " curr_node_per - " << pos_str << " curr_node - " << node3_str << endl;
                                     this_node->name = node3_str;
                                     this_node->parent_name = pos_str;
+                                    this_node->in_path = false;
                                     Graph.push_back(*this_node);
                                     if (node3 == finish) {
                                         cout << "finish" << endl;
@@ -156,8 +154,11 @@ vector <Node> solve_tree() {
                                 nodes.push_back(node2);
                                 string node2_str = pos_to_string(node2);
                                 Node* this_node = new Node;
+                                this_node->set_parent_id(parent_id);
+                                cout << "curr_node_per_id: \t" << parent_id << " curr_node_per - " << pos_str << " curr_node - " << node2_str << endl;
                                 this_node->name = node2_str;
                                 this_node->parent_name = pos_str;
+                                this_node->in_path = false;
                                 Graph.push_back(*this_node);
                                 if (node2 == finish) {
                                     cout << "finish" << endl;
@@ -172,8 +173,11 @@ vector <Node> solve_tree() {
                         nodes.push_back(node);
                         string node_str = pos_to_string(node);
                         Node* this_node = new Node;
+                        this_node->set_parent_id(parent_id);
+                        cout << "curr_node_per_id: \t" << parent_id << " curr_node_per - " << pos_str << " curr_node - " << node_str << endl;
                         this_node->name = node_str;
                         this_node->parent_name = pos_str;
+                        this_node->in_path = false;
                         Graph.push_back(*this_node);
                         if (node == finish) {
                             cout << "finish" << endl;
@@ -184,8 +188,26 @@ vector <Node> solve_tree() {
             }
         }
     }
-    cout << "net puti blyat" << endl;
+    cout << "net puti" << endl;
     return Graph;
+}
+
+vector <Node> solve_tree(vector <Node> tree) {
+
+    cout << "fin node id= " << tree.size() - 1 << endl;
+    Node current_node = tree[tree.size() - 1];
+    tree[tree.size() - 1].in_path = true;
+
+
+    while (current_node.parent_node_id != 0) {
+        cout << "current_node_per_id= " << current_node.parent_node_id << endl;
+        tree[current_node.parent_node_id - 1].in_path = true;
+        current_node = tree[current_node.parent_node_id];
+
+
+    }
+
+    return tree;
 }
 
 int main()
@@ -194,9 +216,20 @@ int main()
 
 
 
-    vector < vector <int> > map(n, vector <int>(m));
 
-    map = { 
+
+
+    vector<vector<int>> start = { {0, 0}, {0, 1}, {0, 2} };
+    vector<vector<int>> finish = { {1, 0}, {1, 1}, {1, 2} };
+    vector<vector<int>> map = {
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0},
+        {1, 1, 0, 1, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0} };
+
+    /*
+    vector<vector<int>> map = { 
         {1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
         {1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -208,6 +241,7 @@ int main()
         {0, 0, 1, 1, 1, 0, 1, 0, 0, 0},
         {0, 0, 0, 1, 0, 0, 0, 0, 0, 0}
     };
+    */
 
     for (int i = 0; i < n; i++)     // Цикл, который идёт по строкам
         for (int j = 0; j < m; j++) // Цикл, который идёт по элементам
@@ -218,25 +252,14 @@ int main()
     out_array(map);
 
     cout << "\n";
-    vector <Node> tree = solve_tree();
+    vector <Node> tree = generate_tree(map, start, finish);
 
-    
+    vector <Node> path = solve_tree(tree);
 
-    /*
-    vector <Node> Graph;
-
-    for (int i = 0; i < 10; i++) {
-        Node* this_node = new Node;
-        this_node->name = to_string(i-1);
-        this_node->parent_name = to_string(i);
-        Graph.push_back(*this_node);
-    }
-
-    */
 
     graph_file graph;
     graph.create_file("graph.dot");
-    graph.write_graph(tree);
+    graph.write_graph(path);
     graph.gen_img();
     
     return 0;

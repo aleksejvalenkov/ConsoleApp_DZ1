@@ -26,14 +26,20 @@ public:
 
     void write_graph(vector <Node> graph) {
         file << "digraph test{" << endl;
-
         for (int i = 0; i < graph.size(); i++) {
-            if (graph[i].parent_name == "TODO") {
-                continue;
+            string p_id = to_string(graph[i].parent_node_id);
+            string sourse = '"' + graph[i].name + '"';
+            string target = '"' + graph[i].parent_name + '"';
+            string edge;
+            cout << graph[i].in_path << endl;
+            if (graph[i].in_path) {
+                edge = target + " -> " + sourse + "[color=" + '"' + "blue" + '"' + "]";
+                file << target + "[color=" + '"' + "blue" + '"' + "]" << endl;
+                file << sourse + "[color=" + '"' + "blue" + '"' + "]" << endl;
             }
-            string sourse = graph[i].name;
-            string target = graph[i].parent_name;
-            string edge = sourse + " -> " + target;
+            else {
+                edge = target + " -> " + sourse;
+            }
             file << edge << endl;
         }
 
