@@ -141,7 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="graph.dot" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="graph.dot.png" />

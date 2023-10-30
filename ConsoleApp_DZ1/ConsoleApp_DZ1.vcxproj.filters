@@ -40,7 +40,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="graph.dot">
       <Filter>Файлы ресурсов</Filter>
     </None>
