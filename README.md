@@ -1,7 +1,16 @@
 # ConsoleApp_DZ1
-
+# How to use
+IT'S work only on WINDOWS
 ## Download and install "graphviz-9.0.0 (64-bit) EXE installer"
+Для отрисовки графа необхоимо установить приложение graphviz.
+
+```bash
     https://graphviz.org/download/
+```
+
+Select "Add Graphviz to the system PATH for all users"\
+\
+![alt text](/images/install.png)
 ## Описание
 Консольное приложение написано на C++ (Самом лучшем языке в мире).\
 Необходимо сначала ввести начальные координаты трёх роботов, затем конечные координаты. Ориентируясь на подсказки в консоли.\
