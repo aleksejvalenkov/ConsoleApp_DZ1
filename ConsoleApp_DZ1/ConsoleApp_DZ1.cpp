@@ -242,11 +242,11 @@ int main()
     
     out_array(map);
 
-    vector<vector<int>> start = { {0, 1}, {0, 2}, {0, 3} };
-    vector<vector<int>> finish = { {1, 1}, {3, 2}, {1, 3} };
+    //vector<vector<int>> start = { {0, 1}, {0, 2}, {0, 3} };
+    //vector<vector<int>> finish = { {1, 1}, {3, 2}, {1, 3} };
 
-    //vector<vector<int>> start = input_pos_robots("Start");
-    //vector<vector<int>> finish = input_pos_robots("Finish");
+    vector<vector<int>> start = input_pos_robots("Start");
+    vector<vector<int>> finish = input_pos_robots("Finish");
 
     cout << "Start" << pos_to_string(start) << endl;
     cout << "Finish" << pos_to_string(finish) << endl;
@@ -265,7 +265,8 @@ int main()
     graph.create_file("graph.dot");
     graph.write_graph(path);
     graph.gen_img();
-    
+
+    system("pause");
     return 0;
 
 }
