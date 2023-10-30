@@ -11,10 +11,6 @@
 
 using namespace std;
 
-#define m 10
-#define n 10
-
-
 void SetColor(int text, int bg) {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hStdOut, (WORD)((bg << 4) | text));
@@ -156,7 +152,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                                     this_node->in_path = false;
                                     Graph.push_back(*this_node);
                                     if (node3 == finish) {
-                                        cout << "finish" << endl;
+                                        cout << "Finish" << endl;
                                         return Graph;
                                     }
                                 }
@@ -174,7 +170,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                                 this_node->in_path = false;
                                 Graph.push_back(*this_node);
                                 if (node2 == finish) {
-                                    cout << "finish" << endl;
+                                    cout << "Finish" << endl;
                                     return Graph;
                                 }
                             }
@@ -193,7 +189,7 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
                         this_node->in_path = false;
                         Graph.push_back(*this_node);
                         if (node == finish) {
-                            cout << "finish" << endl;
+                            cout << "Finish" << endl;
                             return Graph;
                         }
                     }
@@ -206,14 +202,17 @@ vector <Node> generate_tree(vector<vector<int>> map, vector<vector<int>> start, 
 }
 
 vector <Node> solve_tree(vector <Node> tree) {
-    cout << "fin node id= " << tree.size() - 1 << endl;
+    cout << "final path \t" << tree[tree.size() - 1].name << endl;
+    //cout << "fin node id= " << tree.size() - 1 << endl;
     Node current_node = tree[tree.size() - 1];
     tree[tree.size() - 1].in_path = true;
     while (current_node.parent_node_id != 0) {
-        cout << "current_node_per_id= " << current_node.parent_node_id << endl;
+        cout << "Step      \t" << tree[current_node.parent_node_id - 1].name << endl;
+        //cout << "current_node_per_id= " << current_node.parent_node_id << endl;
         tree[current_node.parent_node_id - 1].in_path = true;
         current_node = tree[current_node.parent_node_id];
     }
+    cout << "Start     \t" << current_node.parent_name << endl;
     return tree;
 }
 
